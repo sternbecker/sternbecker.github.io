@@ -1,0 +1,92 @@
+---
+import fs from "node:fs";
+import "photoswipe/style.css";
+
+const photosPath = "./public/photos";
+const allImages = fs
+    .readdirSync(photosPath)
+    .filter((file) => /\.(jpg|jpeg|png|webp)$/i.test(file))
+    .sort();
+
+// Get first 6 images for the gallery preview
+const visibleImages = allImages.slice(0, 6);
+const remainingImages = allImages.slice(6);
+const remainingCount = Math.max(0, allImages.length - 6);
+---
+
+<div class="gallery-container">
+    <div class="columns-2 gap-4">
+        {
+            visibleImages.map((imageName, index) => (
+                <div class="mb-4 break-inside-avoid relative">
+                    <a
+                        href={`/photos/${imageName}`}
+                        class="gallery-item block overflow-hidden rounded-lg shadow hover:shadow-md transition-transform duration-200 hover:scale-[1.03] cursor-pointer"
+                        data-pswp-index={index}
+                    >
+                        <img
+                            src={`/photos/${imageName}`}
+                            alt={imageName.split(".")[0]}
+                            class="w-full h-auto object-cover"
+                            loading="lazy"
+                        />
+                        {index === 5 && remainingCount > 0 && (
+                            <div class="absolute inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center rounded-lg">
+                                <span class="text-white text-xl font-bold">+{remainingCount} mehr</span>
+                            </div>
+                        )}
+                    </a>
+                </div>
+            ))
+        }
+    </div>
+
+    <!-- Hidden container for remaining images -->
+    <div class="hidden">
+        {
+            remainingImages.map((imageName, index) => (
+                <a
+                    href={`/photos/${imageName}`}
+                    class="gallery-item"
+                    data-pswp-index={index + 6}
+                >
+                    <img
+                        src={`/photos/${imageName}`}
+                        alt={imageName.split(".")[0]}
+                        loading="lazy"
+                    />
+                </a>
+            ))
+        }
+    </div>
+</div>
+
+<script>
+    window.addEventListener("load", async () => {
+        const PhotoSwipeLightbox = (await import("photoswipe/lightbox"))
+            .default;
+        const PhotoSwipe = (await import("photoswipe")).default;
+
+        const lightbox = new PhotoSwipeLightbox({
+            gallery: ".gallery-container",
+            children: "a.gallery-item",
+            pswpModule: () => PhotoSwipe,
+        });
+
+        lightbox.init();
+
+        // Update image dimensions after they load
+        document.querySelectorAll(".gallery-item").forEach((item) => {
+            const img = item.querySelector("img");
+            if (img.complete) {
+                item.setAttribute("data-pswp-width", img.naturalWidth);
+                item.setAttribute("data-pswp-height", img.naturalHeight);
+            } else {
+                img.onload = () => {
+                    item.setAttribute("data-pswp-width", img.naturalWidth);
+                    item.setAttribute("data-pswp-height", img.naturalHeight);
+                };
+            }
+        });
+    });
+</script>

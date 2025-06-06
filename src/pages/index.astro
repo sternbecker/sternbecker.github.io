@@ -1,0 +1,27 @@
+---
+import "../styles/global.css";
+import Hero from "../components/Hero.astro";
+import Gallery from "../components/Gallery.astro";
+import Reviews from "../components/Reviews.astro";
+import ContactForm from "../components/ContactForm.astro";
+import Accordion from "../components/Accordion.astro";
+---
+
+<html lang="en" data-theme="light">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro</title>
+	</head>
+	<body>
+		<Hero />
+		<div class="mx-4">
+			<Gallery />
+			<Reviews />
+			<ContactForm />
+			<Accordion />
+		</div>
+	</body>
+</html>
