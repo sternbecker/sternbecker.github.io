@@ -13,14 +13,14 @@ const initials = getInitials(name);
 
 <div class="card bg-gray-100">
     <div class="card bg-gray-100 p-4">
-        <div class="flex flex-row items-center gap-2">
+        <div class="flex flex-row items-center gap-2 mb-2">
             <!-- <img class="w-6 h-6" src="user.svg" alt="user" /> -->
             <div class="avatar avatar-placeholder">
                 <div class="bg-[#4C694E] text-neutral-content w-8 rounded-full">
                     <span class="xs">{initials}</span>
                 </div>
             </div>
-            <p>{name}</p>
+            <p class="font-bold">{name}</p>
         </div>
         <p>{message}</p>
     </div>
