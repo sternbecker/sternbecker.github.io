@@ -67,26 +67,47 @@ const remainingCount = Math.max(0, allImages.length - 6);
             .default;
         const PhotoSwipe = (await import("photoswipe")).default;
 
+        // Function to set image dimensions
+        function setImageDimensions(item) {
+            const img = item.querySelector("img");
+            
+            // Create a new Image object to get the real dimensions
+            const tempImage = new Image();
+            tempImage.src = img.src;
+            
+            tempImage.onload = () => {
+                item.setAttribute("data-pswp-width", tempImage.naturalWidth);
+                item.setAttribute("data-pswp-height", tempImage.naturalHeight);
+            };
+        }
+
+        // Initialize PhotoSwipe with additional options
         const lightbox = new PhotoSwipeLightbox({
             gallery: ".gallery-container",
             children: "a.gallery-item",
             pswpModule: () => PhotoSwipe,
+            wheelToZoom: true,
+            imageClickAction: 'zoom',
+            // Ensure proper sizing
+            preload: [1, 2], // Preload one image before and two after
+            allowPanToNext: true,
+            allowMouseDrag: true,
         });
 
         lightbox.init();
 
-        // Update image dimensions after they load
-        document.querySelectorAll(".gallery-item").forEach((item) => {
-            const img = item.querySelector("img");
-            if (img.complete) {
-                item.setAttribute("data-pswp-width", img.naturalWidth);
-                item.setAttribute("data-pswp-height", img.naturalHeight);
-            } else {
-                img.onload = () => {
-                    item.setAttribute("data-pswp-width", img.naturalWidth);
-                    item.setAttribute("data-pswp-height", img.naturalHeight);
-                };
-            }
+        // Set dimensions for all gallery items, including hidden ones
+        document.querySelectorAll(".gallery-item").forEach(setImageDimensions);
+
+        // Handle dynamically loaded images
+        lightbox.on('change', () => {
+            const currentIndex = lightbox.pswp.currIndex;
+            const items = document.querySelectorAll(".gallery-item");
+            
+            // Update dimensions for current and adjacent images
+            if (items[currentIndex]) setImageDimensions(items[currentIndex]);
+            if (items[currentIndex + 1]) setImageDimensions(items[currentIndex + 1]);
+            if (items[currentIndex - 1]) setImageDimensions(items[currentIndex - 1]);
         });
     });
 </script>
