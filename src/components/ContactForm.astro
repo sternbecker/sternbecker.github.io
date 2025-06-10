@@ -1,26 +1,27 @@
-<section id="anfragen" class="mt-16">
-  <h2 class="text-3xl font-bold text-center">Anfragen</h1>
+<!-- https://formsubmit.co -->
+<section id="anfragen" class="mt-16 max-w-2xl container mx-auto">
+  <h2 class="text-3xl font-bold text-center">Anfragen</h2>
   <form
     target="_blank"
-    action="https://formsubmit.co/your@email.com"
+    action="https://formsubmit.co/b546c305f71c047fcec74c845afc5af3"
     method="POST"
   >
     <div class="mt-4">
-      <div class="flex flex-row gap-4">
+      <div class="sm:flex flex-row gap-4">
         <div class="flex-1">
           <input
             type="text"
             name="name"
-            class="input"
+            class="input w-full"
             placeholder="Dein Name"
             required
           />
         </div>
-        <div class="flex-1">
+        <div class="flex-1 mt-4 sm:mt-0">
           <input
             type="email"
             name="email"
-            class="input"
+            class="input w-full"
             placeholder="Deine Email"
             required
           />
@@ -35,8 +36,10 @@
         rows="10"
         required></textarea>
     </div>
-    <button type="submit" class="btn bg-[#4C694E] text-white hover:bg-[#5d785f] btn-block my-4 rounded-lg"
-      >Submit Form</button
+    <button
+      type="submit"
+      class="btn bg-[#4C694E] text-white hover:bg-[#5d785f] btn-block my-4 rounded-lg"
+      >Schicken</button
     >
   </form>
 </section>
